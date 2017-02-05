@@ -11,12 +11,13 @@ query = <<QUERY
   SELECT DISTINCT ?item
   WHERE
   {
-    ?item wdt:P31 wd:Q193512 .
+    ?item wdt:P31 wd:Q28657263 .
   }
 QUERY
 
 wanted = EveryPolitician::Wikidata.sparql(query)
 raise 'No ids' if wanted.empty?
 
+ScraperWiki.sqliteexecute('DELETE FROM data') rescue nil
 data = Wikidata::Areas.new(ids: wanted).data
 ScraperWiki.save_sqlite(%i(id), data)
